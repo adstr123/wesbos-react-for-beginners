@@ -7,6 +7,8 @@ import './css/style.css'
 
 // import the component from its file
 import StorePicker from './components/StorePicker';
+import App from './components/App';
 
 // make the component render to the specified mounting point
-render(<StorePicker/>, document.getElementById("main"));
+//render(<StorePicker/>, document.getElementById("main"));
+render(<App/>, document.getElementById("main"));
