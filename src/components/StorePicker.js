@@ -19,8 +19,10 @@ class StorePicker extends React.Component {
 		console.log('You changed the URL');
 
 		// grab the text from the input
-		console.log(this.storeInput.value);
+		const storeId = this.storeInput.value;
+		console.log(`Going to ${storeId}`);
 		// transition from / to /store/:storeId
+		this.context.router.transitionTo(`/store/${storeId}`);
 	}
 
 	// every component needs this function
@@ -45,6 +47,11 @@ class StorePicker extends React.Component {
 		// return React.createElement('p', {className: 'Testing'}, 'I love you')
 		// ... renders a p element with Testing class, with the content 'I love you'
 	}
+}
+
+// tell React that StorePicker expects the Router to be available, for URL transitioning
+StorePicker.contextTypes = {
+	router: React.PropTypes.object
 }
 
 // allows us to include the component elsewhere
