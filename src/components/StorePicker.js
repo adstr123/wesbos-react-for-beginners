@@ -1,5 +1,7 @@
 // load everything from react library (included in package.json) into the React variable
 import React from 'react';
+// import from named export rather than default
+import { getFunName } from '../helpers';
 
 // create the component
 class StorePicker extends React.Component {
@@ -10,7 +12,7 @@ class StorePicker extends React.Component {
 			// you can only ever return one parent element
 			<form className="store-selector">
 				<h2>Please Enter A Store</h2>
-				<input type="text" required placeholder="Store Name"/>
+				<input type="text" required placeholder="Store Name" defaultValue={getFunName()}/>
 				<button type="submit">Visit Store</button>
 			</form>
 		);
