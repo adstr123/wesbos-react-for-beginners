@@ -5,14 +5,38 @@ import { getFunName } from '../helpers';
 
 // create the component
 class StorePicker extends React.Component {
+	// bind this to this StorePicker for custom functions
+	constructor() {
+		// run parent first i.e. React.Component
+		super();
+		this.goToStore = this.goToStore.bind(this);
+	}
+
+	goToStore(event) {
+		// regular JS event
+		// don't want the default form submission behaviour (reload page) to occur
+		event.preventDefault();
+		console.log('You changed the URL');
+
+		// grab the text from the input
+		console.log(this.storeInput.value);
+		// transition from / to /store/:storeId
+	}
+
 	// every component needs this function
 	// ES6 - same as writing function render()
 	render() {
 		return (
 			// you can only ever return one parent element
-			<form className="store-selector">
+			<form className="store-selector" onSubmit={this.goToStore}>
+			{/*
+			can also do binding like this:
+			<form className="store-selector" onSubmit={(e) => this.goToStore()}>
+			but this binds a new function to each instance of the component on the page, resulting in duplication
+			*/}
 				<h2>Please Enter A Store</h2>
-				<input type="text" required placeholder="Store Name" defaultValue={getFunName()}/>
+				<input type="text" required placeholder="Store Name" defaultValue={getFunName()}
+					ref={(input) => {this.storeInput = input}}/>
 				<button type="submit">Visit Store</button>
 			</form>
 		);
