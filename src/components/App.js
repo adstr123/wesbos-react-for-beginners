@@ -4,6 +4,31 @@ import Order from './Order';
 import Inventory from './Inventory';
 
 class App extends React.Component {
+	// chapter 13
+	constructor() {
+		super();
+		// initially there is no state
+		// getInitialState
+		this.state = {
+			fishes: {},
+			order: {}
+		};
+		this.addFish = this.addFish.bind(this);
+	}
+
+	addFish(fish) {
+		// update our state
+		// copy current state using 'spread'
+		// spreads expand an iterable e.g. array/String to occupy space where multiple arguments are expected
+		const fishes = {...this.state.fishes};
+		// take fish from argument (AddFishForm) and pass it in here to add new fish with 'random' timestamp ID
+		const timestamp = Date.now();
+		fishes[`fish-${timestamp}`] = fish;
+		// set state
+		this.setState({fishes: fishes});
+		this.setState( {fishes} );	// in ES6
+	}
+
 	render() {
 		return (
 			<div className="catch-of-the-day">
@@ -11,7 +36,7 @@ class App extends React.Component {
 					<Header tagline="Fresh Seafood Market"/>
 				</div>
 				<Order/>
-				<Inventory/>
+				<Inventory addFish={this.addFish}/>
 			</div>
 		)
 	}
