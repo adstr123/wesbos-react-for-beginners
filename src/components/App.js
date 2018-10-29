@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header';
 import Order from './Order';
 import Inventory from './Inventory';
+import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
 
 class App extends React.Component {
@@ -43,6 +44,17 @@ class App extends React.Component {
 			<div className="catch-of-the-day">
 				<div className="menu">
 					<Header tagline="Fresh Seafood Market"/>
+					<ul className="list-of-fishes">
+						{/*
+							Object.keys() returns a list of property keys for an object
+							.map() part returns a fish component for each key
+							key={key} assigns unique key for each fish
+							details loads in properties for each fish into the individual Fish component props
+						*/}
+						{
+							Object.keys(this.state.fishes).map(key => <Fish key={key} details={this.state.fishes[key]} />)
+						}
+					</ul>
 				</div>
 				<Order/>
 				<Inventory addFish={this.addFish} loadSamples={this.loadSamples}/>
