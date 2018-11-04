@@ -31,11 +31,27 @@ class App extends React.Component {
 			context: this,
 			state: 'fishes'
 		});
+
+		// also check if there is any order in localStore
+		const localStorageRef = localStorage.getItem(`order-${this.props.params.storeId}`);
+		if (localStorageRef) {
+			// update App component order state
+			this.setState({
+				order: JSON.parse(localStorageRef)
+			});
+		}
 	}
 
 	// unbind db when switching stores (App.js instances)
 	componentWillUnmount() {
 		base.removeBinding(this.ref);
+	}
+
+	// every time App component updates (props or state change), store order state in localStorage
+	// localStorage uses key:value pairs
+	// cannot store an object, but can convert to JSON
+	componentWillUpdate(nextProps, nextState) {
+		localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order));
 	}
 
 	addFish(fish) {
@@ -87,7 +103,7 @@ class App extends React.Component {
 						}
 					</ul>
 				</div>
-				<Order fishes={this.state.fishes} order={this.state.order}/>
+				<Order fishes={this.state.fishes} order={this.state.order} params={this.props.params}/>
 				<Inventory addFish={this.addFish} loadSamples={this.loadSamples}/>
 			</div>
 		)
