@@ -4,6 +4,7 @@ import Order from './Order';
 import Inventory from './Inventory';
 import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
+import base from '../base';
 
 class App extends React.Component {
 	// chapter 13
@@ -18,6 +19,23 @@ class App extends React.Component {
 		this.addFish = this.addFish.bind(this);
 		this.loadSamples = this.loadSamples.bind(this);
 		this.addToOrder = this.addToOrder.bind(this);
+	}
+
+	// just before component is rendered, do this
+	componentWillMount() {
+		// don't sync entire db, sync only relevant state
+		// storeId defined in index JS in react-router automatically passed as props to App.js
+		// need a ref for componentWillUnmount
+		this.ref = base.syncState(`${this.props.params.storeId}/fishes`
+			, {
+			context: this,
+			state: 'fishes'
+		});
+	}
+
+	// unbind db when switching stores (App.js instances)
+	componentWillUnmount() {
+		base.removeBinding(this.ref);
 	}
 
 	addFish(fish) {
