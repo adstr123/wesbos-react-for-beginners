@@ -18,8 +18,10 @@ class App extends React.Component {
 		};
 		this.addFish = this.addFish.bind(this);
 		this.updateFish = this.updateFish.bind(this);
+		this.removeFish = this.removeFish.bind(this);
 		this.loadSamples = this.loadSamples.bind(this);
 		this.addToOrder = this.addToOrder.bind(this);
+		this.removeFromOrder = this.removeFromOrder.bind(this);
 	}
 
 	// just before component is rendered, do this
@@ -59,6 +61,7 @@ class App extends React.Component {
 		// update our state
 		// copy current state using 'spread'
 		// spreads expand an iterable e.g. array/String to occupy space where multiple arguments are expected
+		// kinda like taking all the elements out of an iterable and using that set, in place of the array itself
 		const fishes = {...this.state.fishes};
 		// take fish from argument (AddFishForm) and pass it in here to add new fish with 'random' timestamp ID
 		const timestamp = Date.now();
@@ -74,6 +77,14 @@ class App extends React.Component {
 		const fishes = {...this.state.fishes};
 		fishes[key] = updatedFish;
 		this.setState({fishes});
+	}
+
+	// chapter 21
+	removeFish(key) {
+		const fishes = {...this.state.fishes};
+		// Firebase doesn't like delete, can't delete through API?
+		fishes[key] = null;
+		this.setState({ fishes });
 	}
 
 	// chapter 14
@@ -93,6 +104,15 @@ class App extends React.Component {
 		this.setState({ order });
 	}
 
+	// chapter 21
+	removeFromOrder(key) {
+		const order = {...this.state.order};
+		// delete entirely removes component inc. additional text
+		// not restricted by Firebase because using localStorage so use delete
+		delete order[key];
+		this.setState({order});
+	}
+
 	render() {
 		return (
 			<div className="catch-of-the-day">
@@ -108,12 +128,12 @@ class App extends React.Component {
 						{
 							Object
 								.keys(this.state.fishes)
-								.map(key => <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder} />)
+								.map(key => <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder}/>)
 						}
 					</ul>
 				</div>
-				<Order fishes={this.state.fishes} order={this.state.order} params={this.props.params}/>
-				<Inventory addFish={this.addFish} loadSamples={this.loadSamples} fishes={this.state.fishes} updateFish={this.updateFish}/>
+				<Order fishes={this.state.fishes} order={this.state.order}  removeFromOrder={this.removeFromOrder} params={this.props.params}/>
+				<Inventory addFish={this.addFish} removeFish={this.removeFish} loadSamples={this.loadSamples} fishes={this.state.fishes} updateFish={this.updateFish}/>
 			</div>
 		)
 	}
