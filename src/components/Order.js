@@ -1,5 +1,7 @@
 import React from 'react';
 import { formatPrice } from '../helpers';
+// chapter 22
+import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 class Order extends React.Component {
 	constructor() {
@@ -19,7 +21,21 @@ class Order extends React.Component {
 
 		return (
 			<li key={key}>
-				<span>{count}lbs {fish.name} {removeButton}</span>
+				<span>
+					{/* chapter 22 animating count, so wrap in CSSTransitionGroup */}
+					<CSSTransitionGroup
+						component="span"
+						className="count"
+						transitionName="count"
+						transitionEnterTimeout={250}
+						transitionLeaveTimeout={250}
+						>
+						{/* React is smart enough to know two spans are required when a value changes */}
+						{/* but key required to identify which span is leaving, which is entering */}
+						<span key={count}>{count}</span>
+					</CSSTransitionGroup>
+					lbs {fish.name} {removeButton}
+				</span>
 				<span className="price">{formatPrice(count * fish.price)}</span>
 			</li>
 		)
@@ -44,14 +60,23 @@ class Order extends React.Component {
 		return (
 			<div className="order-wrap">
 				<h2>Your Order</h2>
-				<ul className="order">
+
+				{/* CSSTransition group replaces <ul> - chapter 22 */}
+				<CSSTransitionGroup
+					className="order"
+					component="ul"
+					transitionName="order"
+					transitionEnterTimeout={500}
+					transitionLeaveTimeout={500}
+					>
 					{/* outsource to another render function because there's a lot going on here */}
 					{orderIds.map(this.renderOrder)}
 					<li className="total">
 						<strong>Total:</strong>
 						{formatPrice(total)}
 					</li>
-				</ul>
+				</CSSTransitionGroup>
+
 			</div>
 		)
 	}
