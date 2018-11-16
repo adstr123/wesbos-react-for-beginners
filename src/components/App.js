@@ -8,6 +8,7 @@ import base from '../base';
 
 class App extends React.Component {
 	// chapter 13
+	/* chapter 29 removes need for constructor
 	constructor() {
 		super();
 		// initially there is no state
@@ -22,6 +23,13 @@ class App extends React.Component {
 		this.loadSamples = this.loadSamples.bind(this);
 		this.addToOrder = this.addToOrder.bind(this);
 		this.removeFromOrder = this.removeFromOrder.bind(this);
+	}
+	*/
+
+	// chapter 29 new syntax (property initialisers)
+	state = {
+		fishes: {},
+		order: {}
 	}
 
 	// just before component is rendered, do this
@@ -57,7 +65,7 @@ class App extends React.Component {
 		localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order));
 	}
 
-	addFish(fish) {
+	addFish = (fish) => {
 		// update our state
 		// copy current state using 'spread'
 		// spreads expand an iterable e.g. array/String to occupy space where multiple arguments are expected
@@ -73,14 +81,14 @@ class App extends React.Component {
 
 	// chapter 20
 	// update state so inputs change in rendered inventory
-	updateFish(key, updatedFish) {
+	updateFish = (key, updatedFish) => {
 		const fishes = {...this.state.fishes};
 		fishes[key] = updatedFish;
 		this.setState({fishes});
 	}
 
 	// chapter 21
-	removeFish(key) {
+	removeFish = (key) => {
 		const fishes = {...this.state.fishes};
 		// Firebase doesn't like delete, can't delete through API?
 		fishes[key] = null;
@@ -88,14 +96,15 @@ class App extends React.Component {
 	}
 
 	// chapter 14
-	loadSamples() {
+	//loadSamples() {
+	loadSamples = () => { // chapter 29 new syntax (property initialisers avoid binding in constructor())
 		this.setState({
 			fishes: sampleFishes
 		});
-	}
+	};
 
 	// chapter 16
-	addToOrder(key) {
+	addToOrder = (key) => {
 		// take copy of state
 		const order = { ...this.state.order };
 		// update OR add the new number of the fish ordered
@@ -105,7 +114,7 @@ class App extends React.Component {
 	}
 
 	// chapter 21
-	removeFromOrder(key) {
+	removeFromOrder = (key) => {
 		const order = {...this.state.order};
 		// delete entirely removes component inc. additional text
 		// not restricted by Firebase because using localStorage so use delete

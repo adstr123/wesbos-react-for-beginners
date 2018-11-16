@@ -141,8 +141,18 @@ class Inventory extends React.Component {
 			</div>
 		)
 	}
+
+	static propTypes = { // static because don't need a copy for every instance (all same)
+		fishes: React.PropTypes.object.isRequired,
+		updateFish: React.PropTypes.func.isRequired,
+		removeFish: React.PropTypes.func.isRequired,
+		addFish: React.PropTypes.func.isRequired,
+		loadSamples: React.PropTypes.func.isRequired,
+		storeId: React.PropTypes.string.isRequired
+	}
 }
 
+/* chapter 29 new syntax above inside component w/ semicolon
 Inventory.propTypes = {
 	fishes: React.PropTypes.object.isRequired,
 	updateFish: React.PropTypes.func.isRequired,
@@ -151,5 +161,6 @@ Inventory.propTypes = {
 	loadSamples: React.PropTypes.func.isRequired,
 	storeId: React.PropTypes.string.isRequired
 }
+*/
 
 export default Inventory;
